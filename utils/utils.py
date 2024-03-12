@@ -68,7 +68,23 @@ def _construct_req(modelId, prompt, max_tokens_to_sample, temperature, accept, c
             "temperature": temperature,
             "stream": stream,
         }
-    # Anthropic Models
+    # Anthropic Claude 3 messages API
+    elif modelId.startswith('anthropic.claude-3'):
+        req = {
+            "anthropic_version": "bedrock-2023-05-31",
+            "max_tokens": max_tokens_to_sample,
+            "messages": [
+                {
+                   "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt}
+                    ]
+                }
+            ],
+            "temperature": temperature,
+            "top_p": 0.9  # Example value, adjust as needed
+        }
+    # Older Anthropic models
     elif modelId.startswith('anthropic.'):
         req = {
             "body" : json.dumps({
